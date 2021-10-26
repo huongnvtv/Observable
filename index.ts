@@ -1,7 +1,7 @@
 // Import stylesheets
 import './style.css';
-import { from, fromEvent, Observable, of ,interval, timer, forkJoin, delay } from 'rxjs';
-import { distinct, filter, find, map, single, skip, take, takeUntil, takeWhile } from 'rxjs/operators';
+import { from, fromEvent, Observable, of ,interval, timer, forkJoin, delay, zip } from 'rxjs';
+import { distinct, endWith, filter, find, map, single, skip, startWith, take, takeUntil, takeWhile, withLatestFrom } from 'rxjs/operators';
 // Write TypeScript code!
 const appDiv: HTMLElement = document.getElementById('app');
 appDiv.innerHTML = `<h1>TypeScript Starter</h1>`;
@@ -17,11 +17,12 @@ const observer = {
     console.log('Done');
   },
 };
-forkJoin([
-  of([1,2,3]).pipe(delay(2000)),
-  of("word").pipe(delay(5000))
-]).pipe(
-  map(function([item1,item2]){
-    return {hello: item1, word : item2}
-  })
+zip(of(1, 2, 3), of(4, 5, 6), of(7, 8, 9));
+fromEvent(document, 'click')
+  .pipe(withLatestFrom(interval(1000)))
+of("hello").pipe(
+  startWith("word")
+)
+of("hello").pipe(
+  endWith("word")
 ).subscribe(observer)
